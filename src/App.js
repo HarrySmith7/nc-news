@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./components/header";
+import TopicsNav from "./components/topicsnav";
+// import Home from "./components/home";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useState } from "react";
+import { UserContext } from "./contexts/user";
+import Articles from "./components/articles";
+import Topic from "./components/topic";
 
 function App() {
+  const [user, setUser] = useState({
+    username: "defaultuser",
+    avatar_url:
+      "https://thumbs.dreamstime.com/b/avatar-icon-black-round-avatar-flat-symbol-isolated-white-background-avatar-simple-icon-avatar-abstract-icon-black-vector-124920467.jpg",
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user, setUser }}>
+      <div>
+        <Router>
+          <Header />
+          <TopicsNav />
+          <Switch>
+            <Route exact path="/">
+              <Articles />
+            </Route>
+            <Route exact path="/topics/:topic">
+              <Topic />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </UserContext.Provider>
   );
 }
 
